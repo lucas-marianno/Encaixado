@@ -1,3 +1,4 @@
+import 'package:encaixado/presentation/widgets/custom_painter.dart';
 import 'package:flutter/material.dart';
 
 class LetterBox extends StatelessWidget {
@@ -7,33 +8,61 @@ class LetterBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final inset = size / 5;
+    final margin = inset / 4;
     return SizedBox(
       height: size,
       width: size,
-      child: Container(
-          color: Colors.grey,
-          child: Stack(
-            clipBehavior: Clip.none,
-            alignment: AlignmentDirectional.center,
-            children: [
-              // top
-              Positioned(top: -10, left: inset, child: const Text('A')),
-              const Positioned(top: -10, child: Text('B')),
-              Positioned(top: -10, right: inset, child: const Text('C')),
-              // left
-              Positioned(left: -5, top: inset, child: const Text('D')),
-              const Positioned(left: -5, child: Text('E')),
-              Positioned(left: -5, bottom: inset, child: const Text('F')),
-              // right
-              Positioned(right: -5, top: inset, child: const Text('G')),
-              const Positioned(right: -5, child: Text('H')),
-              Positioned(right: -5, bottom: inset, child: const Text('I')),
-              // bottom
-              Positioned(bottom: -10, left: inset, child: const Text('J')),
-              const Positioned(bottom: -10, child: Text('K')),
-              Positioned(bottom: -10, right: inset, child: const Text('L')),
-            ],
-          )),
+      child: TouchCanvas(
+        child: Stack(
+          clipBehavior: Clip.none,
+          alignment: AlignmentDirectional.center,
+          children: [
+            // top
+            Positioned(top: margin, left: inset, child: const Text('A')),
+            Positioned(top: margin, child: const Text('B')),
+            Positioned(top: margin, right: inset, child: const Text('C')),
+            // left
+            Positioned(left: margin, top: inset, child: const Text('D')),
+            Positioned(left: margin, child: const Text('E')),
+            Positioned(left: margin, bottom: inset, child: const Text('F')),
+            // right
+            Positioned(right: margin, top: inset, child: const Text('G')),
+            Positioned(right: margin, child: const Text('H')),
+            Positioned(right: margin, bottom: inset, child: const Text('I')),
+            // bottom
+            Positioned(bottom: margin, left: inset, child: const Text('J')),
+            Positioned(bottom: margin, child: const Text('K')),
+            Positioned(bottom: margin, right: inset, child: const Text('L')),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TouchCanvas extends StatefulWidget {
+  const TouchCanvas({required this.child, super.key});
+  final Widget child;
+
+  @override
+  State<TouchCanvas> createState() => _TouchCanvasState();
+}
+
+class _TouchCanvasState extends State<TouchCanvas> {
+  Offset? start;
+  Offset? touch;
+  Offset? end;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onPanStart: (d) => setState(() => start = d.localPosition),
+      onPanUpdate: (d) => setState(() => touch = d.localPosition),
+      onPanEnd: (d) => setState(() => end = d.localPosition),
+      child: CustomPaint(
+        foregroundPainter: LinePainer(start, touch, end),
+        child: Container(color: Colors.grey, child: widget.child),
+      ),
     );
   }
 }
