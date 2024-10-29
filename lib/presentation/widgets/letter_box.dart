@@ -3,28 +3,15 @@ import 'package:encaixado/presentation/widgets/path_controller.dart';
 import 'package:encaixado/presentation/widgets/path_painter.dart';
 import 'package:flutter/material.dart';
 
-class LetterBox extends StatefulWidget {
+class LetterBox extends StatelessWidget {
   final double size;
-  const LetterBox(this.size, {super.key});
-
-  @override
-  State<LetterBox> createState() => _LetterBoxState();
-}
-
-class _LetterBoxState extends State<LetterBox> {
-  late final PathController controller;
-
-  @override
-  void initState() {
-    super.initState();
-
-    controller = PathController(setStateCallback: () => setState(() {}));
-  }
+  final PathController controller;
+  const LetterBox(this.size, {required this.controller, super.key});
 
   @override
   Widget build(BuildContext context) {
-    final longOffset = widget.size * 0.45;
-    final shortOffset = widget.size * 0.27;
+    final longOffset = size * 0.45;
+    final shortOffset = size * 0.27;
 
     final Map<String, Offset> letterBoxPos = {
       // top
@@ -46,25 +33,29 @@ class _LetterBoxState extends State<LetterBox> {
     };
 
     return SizedBox(
-      height: widget.size,
-      width: widget.size,
-      child: CustomPaint(
-        foregroundPainter: PathPainter(controller),
-        child: Container(
-          color: Colors.grey,
-          child: Stack(
-            alignment: AlignmentDirectional.center,
-            children: [
-              for (var entry in letterBoxPos.entries)
-                LetterTarget(
-                  label: entry.key,
-                  letterOffsetFromCenter: entry.value,
-                  center: Offset(widget.size / 2, widget.size / 2),
-                  controller: controller,
-                )
-            ],
+      height: size,
+      width: size,
+      child: Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+          CustomPaint(
+            foregroundPainter: PathPainter(controller),
+            child: Container(
+              margin: EdgeInsets.all(size * 0.05),
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                border: Border.all(width: 2),
+              ),
+            ),
           ),
-        ),
+          for (var entry in letterBoxPos.entries)
+            LetterTarget(
+              label: entry.key,
+              letterOffsetFromCenter: entry.value,
+              center: Offset(size / 2, size / 2),
+              controller: controller,
+            )
+        ],
       ),
     );
   }
