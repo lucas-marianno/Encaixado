@@ -5,20 +5,27 @@ import 'package:flutter/material.dart';
 class LinePainer extends CustomPainter {
   final Offset? start;
   final Offset? touch;
-  final Offset? end;
 
-  LinePainer(this.start, this.touch, this.end);
+  final List<List<Offset>> path;
+
+  LinePainer(this.start, this.touch, {required this.path});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..strokeWidth = 10
+    final pathPaint = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 7
       ..strokeCap = StrokeCap.round;
+    final activeLinePaint = Paint()
+      ..strokeWidth = 7
+      ..strokeCap = StrokeCap.round;
+    print('path.length = ${path.length}');
+    for (List line in path) {
+      canvas.drawLine(line[0], line[1], pathPaint);
+    }
 
     if (start != null && touch != null) {
-      canvas.drawLine(start!, touch!, paint);
-    } else if (start != null && end != null) {
-      canvas.drawLine(start!, end!, paint);
+      canvas.drawLine(start!, touch!, activeLinePaint);
     }
   }
 
