@@ -99,6 +99,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  letter_boxed_engine:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: "99e174826dd04139b2d2c1f1baa1335fbb0eeb05"
+      url: "https://github.com/lucas-marianno/letter_boxed_engine"
+    source: git
+    version: "1.0.0"
   lints:
     dependency: transitive
     description:

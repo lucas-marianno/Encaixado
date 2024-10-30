@@ -9,19 +9,26 @@ class PathPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final pathPaint = Paint()
-      ..color = Colors.white
+      ..color = Colors.pink
       ..strokeWidth = 7
       ..strokeCap = StrokeCap.round;
     final activeLinePaint = Paint()
       ..strokeWidth = 7
       ..strokeCap = StrokeCap.round;
-    for (List line in controller.path) {
-      canvas.drawLine(line[0], line[1], pathPaint);
+
+    final path = controller.path;
+    final positions = controller.boxPositions;
+    for (int i = 0; i < path.length - 1; i++) {
+      canvas.drawLine(
+        positions[path[i]]! + controller.center,
+        positions[path[i + 1]]! + controller.center,
+        pathPaint,
+      );
     }
 
-    if (controller.startPos != null && controller.touchPos != null) {
+    if (controller.touchStart != null && controller.touchEnd != null) {
       canvas.drawLine(
-          controller.startPos!, controller.touchPos!, activeLinePaint);
+          controller.touchStart!, controller.touchEnd!, activeLinePaint);
     }
   }
 

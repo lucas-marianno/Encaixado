@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:encaixado/presentation/widgets/letter_box.dart';
 import 'package:encaixado/presentation/widgets/path_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:letter_boxed_engine/encaixado.dart';
 
 class LetterBoxedScreen extends StatefulWidget {
   const LetterBoxedScreen({super.key});
@@ -13,16 +14,19 @@ class LetterBoxedScreen extends StatefulWidget {
 
 class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
   late final PathController controller;
+  final box = Box.fromString('abc def ghi jkl');
 
   @override
   void initState() {
     super.initState();
-    controller = PathController(setStateCallback: () => setState(() {}));
+    controller =
+        PathController(box: box, setStateCallback: () => setState(() {}));
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    controller.boxSize = min(screenSize.width * 0.5, screenSize.height * 0.3);
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: screenSize.width * 0.1,
@@ -33,12 +37,16 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
         children: [
           SizedBox(
             width: min(screenSize.width * 0.6, screenSize.height * 0.3),
-            child: const TextField(),
+            child: TextField(
+              // TODO: add filtering to allow only box available letters to be typed
+              textAlign: TextAlign.center,
+              showCursor: true,
+              onChanged: (value) => controller.setPath = value.toLowerCase(),
+              controller: TextEditingController()
+                ..text = controller.path.join().toUpperCase(),
+            ),
           ),
-          LetterBox(
-            min(screenSize.width * 0.5, screenSize.height * 0.3),
-            controller: controller,
-          ),
+          LetterBox(controller: controller),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
