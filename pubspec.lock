@@ -104,10 +104,10 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "99e174826dd04139b2d2c1f1baa1335fbb0eeb05"
+      resolved-ref: "1271068deb2038035824004b7cfdc89efb359d87"
       url: "https://github.com/lucas-marianno/letter_boxed_engine"
     source: git
-    version: "1.0.0"
+    version: "0.0.2"
   lints:
     dependency: transitive
     description:

@@ -21,7 +21,7 @@ class PathController {
   }
 
   set setPath(String path) {
-    // TODO: add filtering to allow only box available letters
+    if (path.contains(box.denied())) return;
 
     _path.clear();
     _path.addAll(path.split(''));
@@ -61,10 +61,9 @@ class PathController {
   }
 
   void onAcceptDrag(String initialLetter, String finalLetter) {
-    // TODO: add filtering to block any adjacent letter connections
-    // TODO: edit box in package to contain a bool function `isAdjacent`
     if (_path.isEmpty) _path.add(initialLetter);
     if (_path.isEmpty || _path.last != finalLetter) _path.add(finalLetter);
+    if (_path.join().contains(box.denied())) _path.removeLast();
 
     _touchStart = boxPositions[finalLetter]! + _center;
 
@@ -97,8 +96,10 @@ class PathController {
   }
 
   void deleteLastPath() {
-    if (_path.isNotEmpty) _path.removeLast();
-    _touchStart = _path.isNotEmpty ? boxPositions[_path.last] : null;
+    if (_path.isEmpty) return;
+
+    _path.removeLast();
+    _touchStart = _path.isNotEmpty ? boxPositions[_path.last]! + center : null;
 
     setStateCallback();
   }
@@ -113,4 +114,13 @@ class PathController {
 
     setStateCallback();
   }
+
+  /// TODO: implement
+  ///
+  /// check if word contains denied char sequences
+  /// check if dictionary contains word
+  ///
+  /// if word is valid, add it to word sequence (uninplemented)
+  /// else notify user
+  void validate() {}
 }

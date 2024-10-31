@@ -29,12 +29,7 @@ class LetterBox extends StatelessWidget {
             ),
           ),
           for (var entry in letterBoxPos.entries)
-            LetterTarget(
-              letter: entry.key,
-              letterOffsetFromCenter: entry.value,
-              center: Offset(size / 2, size / 2),
-              controller: controller,
-            )
+            LetterTarget(entry.key, controller: controller)
         ],
       ),
     );
