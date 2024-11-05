@@ -11,6 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   letter_boxed_engine:
+  #   path: C:/Users/lucas/Desktop/GIT clones/letter_boxed_engine
     git:
       url: https://github.com/lucas-marianno/letter_boxed_engine
       ref: main

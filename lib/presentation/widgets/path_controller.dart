@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:letter_boxed_engine/encaixado.dart';
+import 'package:letter_boxed_engine/letter_boxed_engine.dart';
 
 class PathController {
+  PathController({required this.box, required this.setStateCallback});
   final Box box;
   final void Function() setStateCallback;
-  PathController({required this.box, required this.setStateCallback});
-
-  Offset? _touchStart;
-  Offset? _touchEnd;
-  Offset _localPosition = Offset.zero;
   final List<String> _path = [];
   late double _boxSize;
   late Offset _center;
+  Offset _touchPoint = Offset.zero;
 
   set boxSize(double size) {
     _boxSize = size;
@@ -21,7 +18,7 @@ class PathController {
   }
 
   set setPath(String path) {
-    if (path.contains(box.denied())) return;
+    if (path.contains(box.denied)) return;
 
     _path.clear();
     _path.addAll(path.split(''));
@@ -30,67 +27,60 @@ class PathController {
   }
 
   double get boxSize => _boxSize;
-  Offset? get touchStart => _touchStart;
-  Offset? get touchEnd => _touchEnd;
+  Offset? get touchStart => path.isEmpty ? null : lettersPositioned[path.last]!;
+  Offset get touchPoint => _touchPoint;
   Offset get center => _center;
   List<String> get path => _path;
 
-  Map<String, Offset> get boxPositions {
+  Map<String, Offset> get lettersPositioned {
     final longOffset = _boxSize * 0.45;
     final shortOffset = _boxSize * 0.27;
 
     final letters = box.letterBox.join();
     return {
       // top
-      letters[0]: Offset(-shortOffset, -longOffset),
-      letters[1]: Offset(0, -longOffset),
-      letters[2]: Offset(shortOffset, -longOffset),
+      letters[0]: Offset(-shortOffset, -longOffset) + _center,
+      letters[1]: Offset(0, -longOffset) + _center,
+      letters[2]: Offset(shortOffset, -longOffset) + _center,
       // left
-      letters[3]: Offset(-longOffset, -shortOffset),
-      letters[4]: Offset(-longOffset, 0),
-      letters[5]: Offset(-longOffset, shortOffset),
+      letters[3]: Offset(-longOffset, -shortOffset) + _center,
+      letters[4]: Offset(-longOffset, 0) + _center,
+      letters[5]: Offset(-longOffset, shortOffset) + _center,
       // right
-      letters[6]: Offset(longOffset, -shortOffset),
-      letters[7]: Offset(longOffset, 0),
-      letters[8]: Offset(longOffset, shortOffset),
+      letters[6]: Offset(longOffset, -shortOffset) + _center,
+      letters[7]: Offset(longOffset, 0) + _center,
+      letters[8]: Offset(longOffset, shortOffset) + _center,
       // bottom
-      letters[9]: Offset(-shortOffset, longOffset),
-      letters[10]: Offset(0, longOffset),
-      letters[11]: Offset(shortOffset, longOffset),
+      letters[9]: Offset(-shortOffset, longOffset) + _center,
+      letters[10]: Offset(0, longOffset) + _center,
+      letters[11]: Offset(shortOffset, longOffset) + _center,
     };
   }
 
   void onAcceptDrag(String initialLetter, String finalLetter) {
     if (_path.isEmpty) _path.add(initialLetter);
     if (_path.isEmpty || _path.last != finalLetter) _path.add(finalLetter);
-    if (_path.join().contains(box.denied())) _path.removeLast();
-
-    _touchStart = boxPositions[finalLetter]! + _center;
+    if (_path.join().contains(box.denied)) _path.removeLast();
 
     setStateCallback();
   }
 
   void onDragStart(String letter) {
-    final start = _path.isNotEmpty ? _path.last : letter;
-    _localPosition = boxPositions[letter]! + center;
-    _touchStart ??= boxPositions[start]! + center;
+    if (path.isEmpty) path.add(letter);
+
+    _touchPoint = lettersPositioned[letter]!;
 
     setStateCallback();
   }
 
   void onDragUpdate(DragUpdateDetails d) {
-    _localPosition += d.delta;
-    _touchEnd = _localPosition;
+    _touchPoint += d.delta;
 
     setStateCallback();
   }
 
   void onDragEnd() {
-    _touchStart = null;
-    _touchEnd = null;
-    _localPosition = Offset.zero;
-
-    if (_path.length % 2 == 0 && _path.isNotEmpty) _path.removeLast;
+    _touchPoint = Offset.zero;
 
     setStateCallback();
   }
@@ -99,7 +89,6 @@ class PathController {
     if (_path.isEmpty) return;
 
     _path.removeLast();
-    _touchStart = _path.isNotEmpty ? boxPositions[_path.last]! + center : null;
 
     setStateCallback();
   }
@@ -107,9 +96,7 @@ class PathController {
   void clearPath() {
     if (_path.isEmpty) return;
 
-    _touchStart = null;
-    _touchEnd = null;
-    _localPosition = Offset.zero;
+    _touchPoint = Offset.zero;
     _path.clear();
 
     setStateCallback();

@@ -9,7 +9,7 @@ class LetterBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final letterBoxPos = controller.boxPositions;
+    final letterBoxPos = controller.lettersPositioned;
     final size = controller.boxSize;
 
     return SizedBox(

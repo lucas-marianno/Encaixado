@@ -15,7 +15,7 @@ class LetterTarget extends StatelessWidget {
     final isUsed = controller.path.contains(letter.toLowerCase());
     final highLight = isSelected || !isUsed;
     return Transform.translate(
-      offset: controller.boxPositions[letter]!,
+      offset: controller.lettersPositioned[letter]! - controller.center,
       child: DragTarget<String>(
         onAcceptWithDetails: (d) => controller.onAcceptDrag(d.data, letter),
         builder: (_, __, ___) {

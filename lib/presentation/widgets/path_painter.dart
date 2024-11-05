@@ -17,18 +17,18 @@ class PathPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round;
 
     final path = controller.path;
-    final positions = controller.boxPositions;
+    final positions = controller.lettersPositioned;
     for (int i = 0; i < path.length - 1; i++) {
       canvas.drawLine(
-        positions[path[i]]! + controller.center,
-        positions[path[i + 1]]! + controller.center,
+        positions[path[i]]!,
+        positions[path[i + 1]]!,
         pathPaint,
       );
     }
 
-    if (controller.touchStart != null && controller.touchEnd != null) {
+    if (controller.touchStart != null && controller.touchPoint != Offset.zero) {
       canvas.drawLine(
-          controller.touchStart!, controller.touchEnd!, activeLinePaint);
+          controller.touchStart!, controller.touchPoint, activeLinePaint);
     }
   }
 

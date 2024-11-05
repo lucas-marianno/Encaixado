@@ -23,7 +23,7 @@ class WordField extends StatelessWidget {
             textAlign: TextAlign.center,
             showCursor: true,
             onChanged: (value) {
-              if (value.contains(controller.box.denied())) {
+              if (value.contains(controller.box.denied)) {
                 value = value.substring(0, value.length - 1);
               }
               controller.setPath = value.toLowerCase();
