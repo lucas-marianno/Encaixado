@@ -16,7 +16,7 @@ class PathPainter extends CustomPainter {
       ..strokeWidth = 7
       ..strokeCap = StrokeCap.round;
 
-    final path = controller.path;
+    final path = controller.letters;
     final positions = controller.lettersPositioned;
     for (int i = 0; i < path.length - 1; i++) {
       canvas.drawLine(

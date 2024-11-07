@@ -9,10 +9,10 @@ class LetterTarget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final path = controller.path;
+    final path = controller.letters;
     final isSelected =
         path.isEmpty ? false : path.last.toLowerCase() == letter.toLowerCase();
-    final isUsed = controller.path.contains(letter.toLowerCase());
+    final isUsed = controller.letters.contains(letter.toLowerCase());
     final highLight = isSelected || !isUsed;
     return Transform.translate(
       offset: controller.lettersPositioned[letter]! - controller.center,

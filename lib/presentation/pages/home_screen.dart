@@ -1,3 +1,4 @@
+import 'package:encaixado/presentation/bloc/game_bloc.dart';
 import 'package:encaixado/presentation/pages/letter_boxed_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,20 @@ class HomeScreen extends StatelessWidget {
             IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
           ],
         ),
-        body: const LetterBoxedScreen(),
+        body: BlocBuilder<GameBloc, GameState>(
+          builder: (context, state) {
+            if (state is GameLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is GameLoaded) {
+              return LetterBoxedScreen(
+                gameEngine: state.gameEngine,
+                gameBox: state.gameBox,
+              );
+            } else {
+              throw FlutterError("W H A T   T H E   F U C K");
+            }
+          },
+        ),
       ),
     );
   }

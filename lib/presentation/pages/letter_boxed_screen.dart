@@ -4,10 +4,17 @@ import 'package:encaixado/presentation/widgets/letter_box.dart';
 import 'package:encaixado/presentation/widgets/path_controller.dart';
 import 'package:encaixado/presentation/widgets/word_field.dart';
 import 'package:flutter/material.dart';
-import 'package:letter_boxed_engine/encaixado.dart';
+import 'package:letter_boxed_engine/letter_boxed_engine.dart';
 
 class LetterBoxedScreen extends StatefulWidget {
-  const LetterBoxedScreen({super.key});
+  final LetterBoxedEngine gameEngine;
+  final Box gameBox;
+
+  const LetterBoxedScreen({
+    required this.gameEngine,
+    required this.gameBox,
+    super.key,
+  });
 
   @override
   State<LetterBoxedScreen> createState() => _LetterBoxedScreenState();
@@ -15,13 +22,12 @@ class LetterBoxedScreen extends StatefulWidget {
 
 class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
   late final PathController controller;
-  final box = Box.fromString('abc def ghi jkl');
 
   @override
   void initState() {
     super.initState();
     controller = PathController(
-      box: box,
+      box: widget.gameBox,
       setStateCallback: () => setState(() {}),
     );
   }
@@ -52,7 +58,13 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
                 child: const Text('Delete'),
               ),
               OutlinedButton(
-                onPressed: () => controller.validate(),
+                onPressed: () {
+                  final isValid = widget.gameEngine
+                      .validateWord(controller.letters.join(), widget.gameBox);
+
+                  print(isValid ? 'valid word' : 'INVALID word');
+                  controller.validate();
+                },
                 child: const Text('Enter'),
               ),
             ],

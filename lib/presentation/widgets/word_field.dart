@@ -9,7 +9,7 @@ class WordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textController = TextEditingController();
-    final text = controller.path.join().toUpperCase();
+    final text = controller.letters.join().toUpperCase();
     textController.value = TextEditingValue(
       text: text,
       selection: TextSelection.collapsed(offset: text.length),
@@ -26,7 +26,7 @@ class WordField extends StatelessWidget {
               if (value.contains(controller.box.denied)) {
                 value = value.substring(0, value.length - 1);
               }
-              controller.setPath = value.toLowerCase();
+              controller.setLetters = value.toLowerCase();
             },
             keyboardType: TextInputType.text,
             controller: textController,
