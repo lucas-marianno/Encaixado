@@ -1,3 +1,4 @@
+import 'package:encaixado/domain/extensions/string_extension.dart';
 import 'package:encaixado/presentation/widgets/path_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -9,11 +10,10 @@ class LetterTarget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final path = controller.letters;
-    final isSelected =
-        path.isEmpty ? false : path.last.toLowerCase() == letter.toLowerCase();
-    final isUsed = controller.letters.contains(letter.toLowerCase());
-    final highLight = isSelected || !isUsed;
+    final path = controller.currentWord;
+    final isSelected = letter.toLowerCase() == path.lastChar.toLowerCase();
+    final isUsed = controller.wordList.join().contains(letter.toLowerCase());
+
     return Transform.translate(
       offset: controller.lettersPositioned[letter]! - controller.center,
       child: DragTarget<String>(
@@ -30,7 +30,7 @@ class LetterTarget extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: Colors.white,
                 border: Border.all(
-                  color: highLight ? Colors.black : Colors.grey,
+                  color: isSelected || !isUsed ? Colors.black : Colors.grey,
                   width: 2,
                 ),
                 boxShadow: !isSelected
@@ -50,7 +50,7 @@ class LetterTarget extends StatelessWidget {
                   child: Text(
                     letter.toUpperCase(),
                     style: TextStyle(
-                      color: highLight ? Colors.black : Colors.grey,
+                      color: isSelected || !isUsed ? Colors.black : Colors.grey,
                       fontWeight: isSelected ? FontWeight.w900 : null,
                     ),
                   ),

@@ -9,7 +9,7 @@ class WordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textController = TextEditingController();
-    final text = controller.letters.join().toUpperCase();
+    final text = controller.currentWord.toUpperCase();
     textController.value = TextEditingValue(
       text: text,
       selection: TextSelection.collapsed(offset: text.length),
@@ -34,7 +34,7 @@ class WordField extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         // TODO: implement words used
-        const Text('WORD1  ->  WORD2  ->  WORD3'),
+        Text(controller.wordList.join('  ->  ')),
       ],
     );
   }

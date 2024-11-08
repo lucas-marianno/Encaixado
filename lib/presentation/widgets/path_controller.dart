@@ -1,14 +1,22 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
+import 'package:encaixado/domain/extensions/string_buffer_extentsion.dart';
+import 'package:encaixado/domain/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:letter_boxed_engine/letter_boxed_engine.dart';
 
 class PathController {
-  PathController({required this.box, required this.setStateCallback});
-
   final Box box;
   final void Function() setStateCallback;
-  final List<String> _letters = [];
+  final LetterBoxedEngine engine;
+  PathController({
+    required this.engine,
+    required this.box,
+    required this.setStateCallback,
+  });
+
+  final StringBuffer _wordBuffer = StringBuffer();
+  final List<String> _wordList = [];
   late double _boxSize;
   late Offset _center;
   Offset _touchPoint = Offset.zero;
@@ -23,20 +31,19 @@ class PathController {
   set setLetters(String word) {
     if (word.contains(box.denied)) return;
 
-    _letters.clear();
-    _letters.addAll(word.split(''));
+    _wordBuffer.clear();
+    _wordBuffer.write(word);
 
     setStateCallback();
   }
 
   double get boxSize => _boxSize;
   Offset? get touchStart =>
-      _letters.isEmpty ? null : lettersPositioned[_letters.last]!;
+      _wordBuffer.isEmpty ? null : lettersPositioned[_wordBuffer.lastChar]!;
   Offset get touchPoint => _touchPoint;
   Offset get center => _center;
-
-  /// sequencial list of single character Strings in order of use (does not divide by word)
-  List<String> get letters => _letters;
+  String get currentWord => _wordBuffer.toString();
+  List<String> get wordList => _wordList;
 
   Map<String, Offset> get lettersPositioned {
     final longOffset = _boxSize * 0.45;
@@ -64,16 +71,16 @@ class PathController {
   }
 
   void onAcceptDrag(String initialLetter, String finalLetter) {
-    if (_letters.isEmpty) _letters.add(initialLetter);
-    if (_letters.isEmpty || _letters.last != finalLetter)
-      _letters.add(finalLetter);
-    if (_letters.join().contains(box.denied)) _letters.removeLast();
+    if (_wordBuffer.isEmpty) _wordBuffer.write(initialLetter);
+    if (_wordBuffer.isEmpty || _wordBuffer.lastChar != finalLetter)
+      _wordBuffer.write(finalLetter);
+    if (_wordBuffer.toString().contains(box.denied)) _wordBuffer.removeLast();
 
     setStateCallback();
   }
 
   void onDragStart(String letter) {
-    if (_letters.isEmpty) _letters.add(letter);
+    if (_wordBuffer.isEmpty) _wordBuffer.write(letter);
 
     _touchPoint = lettersPositioned[letter]!;
 
@@ -92,29 +99,52 @@ class PathController {
     setStateCallback();
   }
 
-  void deleteLastPath() {
-    if (_letters.isEmpty) return;
-
-    _letters.removeLast();
+  void deleteLastChar() {
+    if (_wordList.isEmpty) {
+      if (_wordBuffer.isEmpty) return;
+      _wordBuffer.removeLast();
+    } else {
+      if (_wordBuffer.length > 1) {
+        _wordBuffer.removeLast();
+      } else {
+        _wordBuffer.clear();
+        _wordBuffer.write(_wordList.last);
+        _wordList.removeLast();
+      }
+    }
 
     setStateCallback();
   }
 
-  void clearPath() {
-    if (_letters.isEmpty) return;
-
+  void restartGame() {
     _touchPoint = Offset.zero;
-    _letters.clear();
+    _wordBuffer.clear();
+    _wordList.clear();
 
     setStateCallback();
   }
 
-  /// TODO: implement
   ///
   /// check if word contains denied char sequences
   /// check if dictionary contains word
   ///
   /// if word is valid, add it to word sequence (uninplemented)
-  /// else notify user
-  void validate() {}
+  void validate() {
+    if (_wordList.join().split('').toSet().length >= 12) {
+      if (engine.validateSolution(_wordList, box)) {
+        print('YOU WON');
+      }
+    } else if (engine.validateWord(currentWord, box)) {
+      final last = currentWord.lastChar;
+      _wordList.add(currentWord);
+      _wordBuffer.clear();
+      _wordBuffer.write(last);
+    } else {
+      /// TODO: implement
+      /// notify user
+      print('$currentWord is not a valid word');
+    }
+
+    setStateCallback();
+  }
 }

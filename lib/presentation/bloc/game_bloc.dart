@@ -28,6 +28,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
     _game = await _gameEngine.loadRandomGame();
 
-    emit(GameLoaded(gameEngine: _gameEngine, gameBox: _game.box));
+    emit(GameLoaded(gameEngine: _gameEngine, game: _game));
   }
 }

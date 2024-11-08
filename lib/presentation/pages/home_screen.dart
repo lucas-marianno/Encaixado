@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
             } else if (state is GameLoaded) {
               return LetterBoxedScreen(
                 gameEngine: state.gameEngine,
-                gameBox: state.gameBox,
+                game: state.game,
               );
             } else {
               throw FlutterError("W H A T   T H E   F U C K");

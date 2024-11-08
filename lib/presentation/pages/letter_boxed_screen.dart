@@ -8,11 +8,11 @@ import 'package:letter_boxed_engine/letter_boxed_engine.dart';
 
 class LetterBoxedScreen extends StatefulWidget {
   final LetterBoxedEngine gameEngine;
-  final Box gameBox;
+  final Game game;
 
   const LetterBoxedScreen({
     required this.gameEngine,
-    required this.gameBox,
+    required this.game,
     super.key,
   });
 
@@ -27,7 +27,8 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
   void initState() {
     super.initState();
     controller = PathController(
-      box: widget.gameBox,
+      engine: widget.gameEngine,
+      box: widget.game.box,
       setStateCallback: () => setState(() {}),
     );
   }
@@ -36,41 +37,49 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     controller.boxSize = min(screenSize.width * 0.5, screenSize.height * 0.3);
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: screenSize.width * 0.1,
-        vertical: screenSize.height * 0.1,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          WordField(controller: controller),
-          LetterBox(controller: controller),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              OutlinedButton(
-                onPressed: () => controller.clearPath(),
-                child: const Text('Restart'),
-              ),
-              OutlinedButton(
-                onPressed: () => controller.deleteLastPath(),
-                child: const Text('Delete'),
-              ),
-              OutlinedButton(
-                onPressed: () {
-                  final isValid = widget.gameEngine
-                      .validateWord(controller.letters.join(), widget.gameBox);
+    return Column(
+      children: [
+        Text('at least ${widget.game.nOfSolutions} solutions'),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: screenSize.width * 0.1,
+              vertical: screenSize.height * 0.1,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                WordField(controller: controller),
+                LetterBox(controller: controller),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    OutlinedButton(
+                      onPressed: () => controller.restartGame(),
+                      child: const Text('Restart'),
+                    ),
+                    OutlinedButton(
+                      onPressed: () => controller.deleteLastChar(),
+                      child: const Text('Delete'),
+                    ),
+                    OutlinedButton(
+                      onPressed: () {
+                        final isValid = widget.gameEngine.validateWord(
+                            controller.currentWord, widget.game.box);
 
-                  print(isValid ? 'valid word' : 'INVALID word');
-                  controller.validate();
-                },
-                child: const Text('Enter'),
-              ),
-            ],
-          )
-        ],
-      ),
+                        print(isValid ? 'valid word' : 'INVALID word');
+                        controller.validate();
+                      },
+                      child: const Text('Enter'),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

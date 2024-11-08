@@ -8,27 +8,44 @@ class PathPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final pathPaint = Paint()
-      ..color = Colors.pink
+    final currentWordPaint = Paint()
+      ..color = const Color.fromARGB(130, 233, 30, 98)
       ..strokeWidth = 7
       ..strokeCap = StrokeCap.round;
-    final activeLinePaint = Paint()
+    final historyPaint = Paint()
+      ..color = const Color.fromARGB(180, 255, 255, 255)
+      ..strokeWidth = 4
+      ..strokeCap = StrokeCap.round;
+    final touchLinePaint = Paint()
       ..strokeWidth = 7
       ..strokeCap = StrokeCap.round;
 
-    final path = controller.letters;
     final positions = controller.lettersPositioned;
+
+    // history word
+    for (var word in controller.wordList) {
+      for (int i = 0; i < word.length - 1; i++) {
+        canvas.drawLine(
+          positions[word[i]]!,
+          positions[word[i + 1]]!,
+          historyPaint,
+        );
+      }
+    }
+    // current word
+    final path = controller.currentWord;
     for (int i = 0; i < path.length - 1; i++) {
       canvas.drawLine(
         positions[path[i]]!,
         positions[path[i + 1]]!,
-        pathPaint,
+        currentWordPaint,
       );
     }
 
+    // touch line
     if (controller.touchStart != null && controller.touchPoint != Offset.zero) {
       canvas.drawLine(
-          controller.touchStart!, controller.touchPoint, activeLinePaint);
+          controller.touchStart!, controller.touchPoint, touchLinePaint);
     }
   }
 

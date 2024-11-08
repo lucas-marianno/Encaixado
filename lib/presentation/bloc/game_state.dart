@@ -12,10 +12,10 @@ final class GameLoading extends GameState {}
 
 final class GameLoaded extends GameState {
   final LetterBoxedEngine gameEngine;
-  final Box gameBox;
+  final Game game;
 
-  const GameLoaded({required this.gameEngine, required this.gameBox});
+  const GameLoaded({required this.gameEngine, required this.game});
 
   @override
-  List<Object?> get props => [gameEngine, gameBox];
+  List<Object?> get props => [gameEngine, game];
 }
