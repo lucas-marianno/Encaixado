@@ -53,10 +53,10 @@ packages:
     dependency: "direct main"
     description:
       name: equatable
-      sha256: c2b87cb7756efdf69892005af546c56c0b5037f54d2a88269b4f347a505e3ca2
+      sha256: "567c64b3cb4cf82397aac55f4f0cbd3ca20d77c6c03bedbc4ceaddc08904aef7"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.5"
+    version: "2.0.7"
   fake_async:
     dependency: transitive
     description:
@@ -120,7 +120,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: e0fe4a38e5c87348f5fecb286c52ae88a3e8ac12
+      resolved-ref: d185c4e1363f550813d859aaeed3e25040e649d7
       url: "https://github.com/lucas-marianno/letter_boxed_engine"
     source: git
     version: "0.0.5"

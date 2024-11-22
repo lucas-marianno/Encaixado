@@ -28,7 +28,7 @@ class PathController {
     setStateCallback();
   }
 
-  set setLetters(String word) {
+  set setWord(String word) {
     if (word.contains(box.denied)) return;
 
     _wordBuffer.clear();
@@ -124,17 +124,13 @@ class PathController {
     setStateCallback();
   }
 
-  ///
   /// check if word contains denied char sequences
   /// check if dictionary contains word
   ///
   /// if word is valid, add it to word sequence (uninplemented)
   void validate() {
-    if (_wordList.join().split('').toSet().length >= 12) {
-      if (engine.validateSolution(_wordList, box)) {
-        print('YOU WON');
-      }
-    } else if (engine.validateWord(currentWord, box)) {
+    if (engine.validateWord(currentWord, box)) {
+      print('valid word');
       final last = currentWord.lastChar;
       _wordList.add(currentWord);
       _wordBuffer.clear();
@@ -143,6 +139,14 @@ class PathController {
       /// TODO: implement
       /// notify user
       print('$currentWord is not a valid word');
+    }
+
+    // check if game ended
+    if (_wordList.join().split('').toSet().length >= 12) {
+      print(_wordList);
+      if (engine.validateSolution(_wordList, box)) {
+        print('YOU WON');
+      }
     }
 
     setStateCallback();

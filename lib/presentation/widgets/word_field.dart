@@ -8,6 +8,7 @@ class WordField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final focusNode = FocusNode();
     final textController = TextEditingController();
     final text = controller.currentWord.toUpperCase();
     textController.value = TextEditingValue(
@@ -20,16 +21,31 @@ class WordField extends StatelessWidget {
         SizedBox(
           width: controller.boxSize,
           child: TextField(
+            controller: textController,
+            focusNode: focusNode,
             textAlign: TextAlign.center,
             showCursor: true,
             onChanged: (value) {
-              if (value.contains(controller.box.denied)) {
-                value = value.substring(0, value.length - 1);
+              if (value.isEmpty || value.contains(controller.box.denied)) {
+                textController.value = TextEditingValue(
+                  text: controller.currentWord.toUpperCase(),
+                  selection: TextSelection.collapsed(
+                    offset: controller.currentWord.length,
+                  ),
+                );
+
+                if (value.isEmpty) controller.deleteLastChar();
+              } else {
+                controller.setWord = value.toLowerCase();
+                textController.selection =
+                    TextSelection.collapsed(offset: value.length);
               }
-              controller.setLetters = value.toLowerCase();
+            },
+            onSubmitted: (_) {
+              controller.validate();
+              focusNode.requestFocus();
             },
             keyboardType: TextInputType.text,
-            controller: textController,
           ),
         ),
         const SizedBox(height: 10),

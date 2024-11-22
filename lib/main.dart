@@ -6,17 +6,19 @@ import 'presentation/pages/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  runApp(const MyApp());
+  final gameEngine = LetterBoxedEngine(GameLanguage.pt);
+  await gameEngine.init();
+  runApp(MyApp(gameEngine));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final LetterBoxedEngine gameEngine;
+  const MyApp(this.gameEngine, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => GameBloc(GameLanguage.pt),
+      create: (_) => GameBloc(gameEngine),
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         home: HomeScreen(),

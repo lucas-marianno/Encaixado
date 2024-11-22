@@ -65,10 +65,10 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
                     ),
                     OutlinedButton(
                       onPressed: () {
-                        final isValid = widget.gameEngine.validateWord(
-                            controller.currentWord, widget.game.box);
+                        // final isValid = widget.gameEngine.validateWord(
+                        //     controller.currentWord, widget.game.box);
 
-                        print(isValid ? 'valid word' : 'INVALID word');
+                        // print(isValid ? 'valid word' : 'INVALID word');
                         controller.validate();
                       },
                       child: const Text('Enter'),

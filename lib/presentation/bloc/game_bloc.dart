@@ -9,12 +9,10 @@ part 'game_event.dart';
 part 'game_state.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
-  late final LetterBoxedEngine _gameEngine;
+  final LetterBoxedEngine gameEngine;
   late final Game _game;
 
-  final GameLanguage language;
-
-  GameBloc(this.language) : super(GameLoading()) {
+  GameBloc(this.gameEngine) : super(GameLoading()) {
     on<GameInitial>(_onGameInitial);
 
     add(GameInitial());
@@ -23,11 +21,13 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   _onGameInitial(GameEvent event, Emitter<GameState> emit) async {
     emit(GameLoading());
 
-    _gameEngine = LetterBoxedEngine(language);
-    await _gameEngine.init();
+    // _game = await gameEngine.loadRandomGame();
+    _game = Game(
+      box: Box(fromString: "cnr ota iep mus"),
+      language: GameLanguage.pt,
+      nOfSolutions: 58732,
+    );
 
-    _game = await _gameEngine.loadRandomGame();
-
-    emit(GameLoaded(gameEngine: _gameEngine, game: _game));
+    emit(GameLoaded(gameEngine: gameEngine, game: _game));
   }
 }
