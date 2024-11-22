@@ -1,29 +1,39 @@
 import 'package:encaixado/domain/extensions/string_extension.dart';
-import 'package:encaixado/presentation/widgets/path_controller.dart';
+import 'package:encaixado/presentation/game_controller.dart';
+import 'package:encaixado/presentation/touch_controller.dart';
 import 'package:flutter/material.dart';
 
 class LetterTarget extends StatelessWidget {
   final String letter;
-  final PathController controller;
+  final GameController gameController;
+  final TouchController touchController;
 
-  const LetterTarget(this.letter, {required this.controller, super.key});
+  const LetterTarget(
+    this.letter, {
+    required this.gameController,
+    required this.touchController,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final path = controller.currentWord;
+    final path = gameController.word;
     final isSelected = letter.toLowerCase() == path.lastChar.toLowerCase();
-    final isUsed = controller.wordList.join().contains(letter.toLowerCase());
+    final isUsed =
+        gameController.wordList.join().contains(letter.toLowerCase());
 
     return Transform.translate(
-      offset: controller.lettersPositioned[letter]! - controller.center,
+      offset:
+          touchController.lettersPositioned[letter]! - touchController.center,
       child: DragTarget<String>(
-        onAcceptWithDetails: (d) => controller.onAcceptDrag(d.data, letter),
+        onAcceptWithDetails: (d) =>
+            touchController.onAcceptDrag(d.data, letter),
         builder: (_, __, ___) {
           return Draggable<String>(
             data: letter,
-            onDragStarted: () => controller.onDragStart(letter),
-            onDragUpdate: controller.onDragUpdate,
-            onDragEnd: (_) => controller.onDragEnd(),
+            onDragStarted: () => touchController.onDragStart(letter),
+            onDragUpdate: touchController.onDragUpdate,
+            onDragEnd: (_) => touchController.onDragEnd(),
             feedback: const SizedBox(),
             child: Container(
               decoration: BoxDecoration(
@@ -38,14 +48,14 @@ class LetterTarget extends StatelessWidget {
                     : [
                         BoxShadow(
                           color: Colors.pink,
-                          spreadRadius: controller.boxSize * 0.02,
-                          blurRadius: controller.boxSize * 0.02,
+                          spreadRadius: touchController.boxSize * 0.02,
+                          blurRadius: touchController.boxSize * 0.02,
                         )
                       ],
               ),
               child: SizedBox(
-                height: controller.boxSize * .15,
-                width: controller.boxSize * .15,
+                height: touchController.boxSize * .15,
+                width: touchController.boxSize * .15,
                 child: Center(
                   child: Text(
                     letter.toUpperCase(),

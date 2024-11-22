@@ -1,10 +1,12 @@
-import 'package:encaixado/presentation/widgets/path_controller.dart';
+import 'package:encaixado/presentation/game_controller.dart';
+import 'package:encaixado/presentation/touch_controller.dart';
 import 'package:flutter/material.dart';
 
 class PathPainter extends CustomPainter {
-  final PathController controller;
+  final TouchController touchController;
+  final GameController gameController;
 
-  PathPainter(this.controller);
+  PathPainter({required this.touchController, required this.gameController});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -20,10 +22,10 @@ class PathPainter extends CustomPainter {
       ..strokeWidth = 7
       ..strokeCap = StrokeCap.round;
 
-    final positions = controller.lettersPositioned;
+    final positions = touchController.lettersPositioned;
 
     // history word
-    for (var word in controller.wordList) {
+    for (var word in gameController.wordList) {
       for (int i = 0; i < word.length - 1; i++) {
         canvas.drawLine(
           positions[word[i]]!,
@@ -33,7 +35,7 @@ class PathPainter extends CustomPainter {
       }
     }
     // current word
-    final path = controller.currentWord;
+    final path = gameController.word;
     for (int i = 0; i < path.length - 1; i++) {
       canvas.drawLine(
         positions[path[i]]!,
@@ -43,9 +45,10 @@ class PathPainter extends CustomPainter {
     }
 
     // touch line
-    if (controller.touchStart != null && controller.touchPoint != Offset.zero) {
-      canvas.drawLine(
-          controller.touchStart!, controller.touchPoint, touchLinePaint);
+    if (touchController.touchStart != null &&
+        touchController.touchPoint != Offset.zero) {
+      canvas.drawLine(touchController.touchStart!, touchController.touchPoint,
+          touchLinePaint);
     }
   }
 

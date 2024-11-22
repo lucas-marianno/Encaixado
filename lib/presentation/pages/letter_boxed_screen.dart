@@ -1,7 +1,8 @@
 import 'dart:math';
 
+import 'package:encaixado/presentation/game_controller.dart';
 import 'package:encaixado/presentation/widgets/letter_box.dart';
-import 'package:encaixado/presentation/widgets/path_controller.dart';
+import 'package:encaixado/presentation/touch_controller.dart';
 import 'package:encaixado/presentation/widgets/word_field.dart';
 import 'package:flutter/material.dart';
 import 'package:letter_boxed_engine/letter_boxed_engine.dart';
@@ -21,16 +22,23 @@ class LetterBoxedScreen extends StatefulWidget {
 }
 
 class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
-  late final PathController controller;
+  late final TouchController controller;
+  late final GameController gameController;
 
   @override
   void initState() {
     super.initState();
-    controller = PathController(
-      engine: widget.gameEngine,
+
+    gameController = GameController(
       box: widget.game.box,
-      setStateCallback: () => setState(() {}),
+      engine: widget.gameEngine,
     );
+    // controller = PathController(
+    //   gameController: gameController,
+    //   engine: widget.gameEngine,
+    //   box: widget.game.box,
+    //   setStateCallback: () => setState(() {}),
+    // );
   }
 
   @override
@@ -50,17 +58,20 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                WordField(controller: controller),
-                LetterBox(controller: controller),
+                WordField(controller: gameController),
+                LetterBox(
+                  touchController: controller,
+                  gameController: gameController,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     OutlinedButton(
-                      onPressed: () => controller.restartGame(),
+                      onPressed: () => gameController.restartGame(),
                       child: const Text('Restart'),
                     ),
                     OutlinedButton(
-                      onPressed: () => controller.deleteLastChar(),
+                      onPressed: () => gameController.deleteLastChar(),
                       child: const Text('Delete'),
                     ),
                     OutlinedButton(
@@ -69,7 +80,7 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
                         //     controller.currentWord, widget.game.box);
 
                         // print(isValid ? 'valid word' : 'INVALID word');
-                        controller.validate();
+                        gameController.validate();
                       },
                       child: const Text('Enter'),
                     ),
