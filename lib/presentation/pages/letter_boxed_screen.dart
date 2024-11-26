@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:encaixado/presentation/widgets/letter_box.dart';
-import 'package:encaixado/presentation/widgets/path_controller.dart';
+import 'package:encaixado/path_controller.dart';
 import 'package:encaixado/presentation/widgets/word_field.dart';
 import 'package:flutter/material.dart';
 import 'package:letter_boxed_engine/letter_boxed_engine.dart';
@@ -27,6 +27,7 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
   void initState() {
     super.initState();
     controller = PathController(
+      context: context,
       engine: widget.gameEngine,
       box: widget.game.box,
       setStateCallback: () => setState(() {}),
@@ -57,21 +58,15 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
                   children: [
                     OutlinedButton(
                       onPressed: () => controller.restartGame(),
-                      child: const Text('Restart'),
+                      child: const Text('Reiniciar'),
                     ),
                     OutlinedButton(
                       onPressed: () => controller.deleteLastChar(),
-                      child: const Text('Delete'),
+                      child: const Text('  Apagar  '),
                     ),
                     OutlinedButton(
-                      onPressed: () {
-                        // final isValid = widget.gameEngine.validateWord(
-                        //     controller.currentWord, widget.game.box);
-
-                        // print(isValid ? 'valid word' : 'INVALID word');
-                        controller.validate();
-                      },
-                      child: const Text('Enter'),
+                      onPressed: () => controller.validate(),
+                      child: const Text('    Ir    '),
                     ),
                   ],
                 )

@@ -1,5 +1,5 @@
 import 'package:encaixado/presentation/widgets/letter_target.dart';
-import 'package:encaixado/presentation/widgets/path_controller.dart';
+import 'package:encaixado/path_controller.dart';
 import 'package:encaixado/presentation/widgets/path_painter.dart';
 import 'package:flutter/material.dart';
 

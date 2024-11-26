@@ -9,7 +9,9 @@ class PathController {
   final Box box;
   final void Function() setStateCallback;
   final LetterBoxedEngine engine;
+  final BuildContext context;
   PathController({
+    required this.context,
     required this.engine,
     required this.box,
     required this.setStateCallback,
@@ -128,25 +130,32 @@ class PathController {
   /// check if dictionary contains word
   ///
   /// if word is valid, add it to word sequence (uninplemented)
-  void validate() {
+  Future<void> validate() async {
     if (engine.validateWord(currentWord, box)) {
-      print('valid word');
-      final last = currentWord.lastChar;
+      final startingLetter = currentWord.lastChar;
       _wordList.add(currentWord);
       _wordBuffer.clear();
-      _wordBuffer.write(last);
-    } else {
-      /// TODO: implement
-      /// notify user
-      print('$currentWord is not a valid word');
-    }
+      _wordBuffer.write(startingLetter);
 
-    // check if game ended
-    if (_wordList.join().split('').toSet().length >= 12) {
-      print(_wordList);
       if (engine.validateSolution(_wordList, box)) {
-        print('YOU WON');
+        await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Genial!'),
+            content: Text(
+              'Você resolveu o Encaixado de hoje com apenas '
+              '${_wordList.length} palavras:\n\n$_wordList',
+            ),
+          ),
+        );
       }
+    } else {
+      await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: Text('"$currentWord" não é uma palavra aceita'),
+        ),
+      );
     }
 
     setStateCallback();

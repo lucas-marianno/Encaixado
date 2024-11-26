@@ -1,5 +1,5 @@
 import 'package:encaixado/domain/extensions/string_extension.dart';
-import 'package:encaixado/presentation/widgets/path_controller.dart';
+import 'package:encaixado/path_controller.dart';
 import 'package:flutter/material.dart';
 
 class LetterTarget extends StatelessWidget {
