@@ -1,5 +1,5 @@
 import 'package:encaixado/presentation/widgets/letter_target.dart';
-import 'package:encaixado/presentation/widgets/path_controller.dart';
+import 'package:encaixado/presentation/path_controller.dart';
 import 'package:encaixado/presentation/widgets/path_painter.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +9,6 @@ class LetterBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final letterBoxPos = controller.lettersPositioned;
     final size = controller.boxSize;
 
     return SizedBox(
@@ -28,8 +27,8 @@ class LetterBox extends StatelessWidget {
               ),
             ),
           ),
-          for (var entry in letterBoxPos.entries)
-            LetterTarget(entry.key, controller: controller)
+          for (String letter in controller.box.letterBox.join().split(''))
+            LetterTarget(letter, controller: controller)
         ],
       ),
     );

@@ -1,7 +1,8 @@
 import 'dart:math';
 
+import 'package:encaixado/presentation/widgets/dialog.dart';
 import 'package:encaixado/presentation/widgets/letter_box.dart';
-import 'package:encaixado/presentation/widgets/path_controller.dart';
+import 'package:encaixado/presentation/path_controller.dart';
 import 'package:encaixado/presentation/widgets/word_field.dart';
 import 'package:flutter/material.dart';
 import 'package:letter_boxed_engine/letter_boxed_engine.dart';
@@ -22,12 +23,36 @@ class LetterBoxedScreen extends StatefulWidget {
 
 class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
   late final PathController controller;
+  late final MessageDialog dialog;
+
+  void submit() async {
+    final isValidWord =
+        widget.gameEngine.validateWord(controller.currentWord, widget.game.box);
+
+    if (isValidWord) {
+      controller.addCurrentWordToSolution();
+
+      final isValidSolution = widget.gameEngine
+          .validateSolution(controller.currentSolution, widget.game.box);
+      if (isValidSolution) {
+        await dialog.show(
+          title: 'Genial!',
+          message: 'Você resolveu o Encaixado de hoje com apenas '
+              '${controller.currentSolution.length} palavras:'
+              '\n\n${controller.currentSolution}',
+        );
+      }
+    } else {
+      dialog.show(
+          message: '"${controller.currentWord}" não é uma palavra aceita');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    dialog = MessageDialog(context);
     controller = PathController(
-      engine: widget.gameEngine,
       box: widget.game.box,
       setStateCallback: () => setState(() {}),
     );
@@ -50,7 +75,7 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                WordField(controller: controller),
+                WordField(controller: controller, onSubmitted: () => submit()),
                 LetterBox(controller: controller),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -60,17 +85,11 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
                       child: const Text('Restart'),
                     ),
                     OutlinedButton(
-                      onPressed: () => controller.deleteLastChar(),
+                      onPressed: () => controller.deleteLastLetter(),
                       child: const Text('Delete'),
                     ),
                     OutlinedButton(
-                      onPressed: () {
-                        // final isValid = widget.gameEngine.validateWord(
-                        //     controller.currentWord, widget.game.box);
-
-                        // print(isValid ? 'valid word' : 'INVALID word');
-                        controller.validate();
-                      },
+                      onPressed: () => submit(),
                       child: const Text('Enter'),
                     ),
                   ],

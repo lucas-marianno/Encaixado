@@ -1,10 +1,15 @@
-import 'package:encaixado/presentation/widgets/path_controller.dart';
+import 'package:encaixado/presentation/path_controller.dart';
 import 'package:flutter/material.dart';
 
 class WordField extends StatelessWidget {
-  const WordField({required this.controller, super.key});
+  const WordField({
+    required this.controller,
+    required this.onSubmitted,
+    super.key,
+  });
 
   final PathController controller;
+  final void Function() onSubmitted;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +26,8 @@ class WordField extends StatelessWidget {
         SizedBox(
           width: controller.boxSize,
           child: TextField(
+            enableInteractiveSelection: false,
+            selectionControls: EmptyTextSelectionControls(),
             controller: textController,
             focusNode: focusNode,
             textAlign: TextAlign.center,
@@ -34,15 +41,15 @@ class WordField extends StatelessWidget {
                   ),
                 );
 
-                if (value.isEmpty) controller.deleteLastChar();
+                if (value.isEmpty) controller.deleteLastLetter();
               } else {
-                controller.setWord = value.toLowerCase();
+                // controller.setWord = value.toLowerCase();
                 textController.selection =
                     TextSelection.collapsed(offset: value.length);
               }
             },
             onSubmitted: (_) {
-              controller.validate();
+              onSubmitted();
               focusNode.requestFocus();
             },
             keyboardType: TextInputType.text,
@@ -50,7 +57,7 @@ class WordField extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         // TODO: implement words used
-        Text(controller.wordList.join('  ->  ')),
+        Text(controller.currentSolution.join('  ->  ')),
       ],
     );
   }

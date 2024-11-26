@@ -1,5 +1,5 @@
 import 'package:encaixado/domain/extensions/string_extension.dart';
-import 'package:encaixado/presentation/widgets/path_controller.dart';
+import 'package:encaixado/presentation/path_controller.dart';
 import 'package:flutter/material.dart';
 
 class LetterTarget extends StatelessWidget {
@@ -12,12 +12,13 @@ class LetterTarget extends StatelessWidget {
   Widget build(BuildContext context) {
     final path = controller.currentWord;
     final isSelected = letter.toLowerCase() == path.lastChar.toLowerCase();
-    final isUsed = controller.wordList.join().contains(letter.toLowerCase());
+    final isUsed =
+        controller.currentSolution.join().contains(letter.toLowerCase());
 
     return Transform.translate(
-      offset: controller.lettersPositioned[letter]! - controller.center,
+      offset: controller.letterPositionAbsolute(letter),
       child: DragTarget<String>(
-        onAcceptWithDetails: (d) => controller.onAcceptDrag(d.data, letter),
+        onAcceptWithDetails: (_) => controller.onAcceptDrag(letter),
         builder: (_, __, ___) {
           return Draggable<String>(
             data: letter,

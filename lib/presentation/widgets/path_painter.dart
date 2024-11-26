@@ -1,4 +1,4 @@
-import 'package:encaixado/presentation/widgets/path_controller.dart';
+import 'package:encaixado/presentation/path_controller.dart';
 import 'package:flutter/material.dart';
 
 class PathPainter extends CustomPainter {
@@ -20,14 +20,12 @@ class PathPainter extends CustomPainter {
       ..strokeWidth = 7
       ..strokeCap = StrokeCap.round;
 
-    final positions = controller.lettersPositioned;
-
     // history word
-    for (var word in controller.wordList) {
+    for (var word in controller.currentSolution) {
       for (int i = 0; i < word.length - 1; i++) {
         canvas.drawLine(
-          positions[word[i]]!,
-          positions[word[i + 1]]!,
+          controller.letterPosition(word[i]),
+          controller.letterPosition(word[i + 1]),
           historyPaint,
         );
       }
@@ -36,8 +34,8 @@ class PathPainter extends CustomPainter {
     final path = controller.currentWord;
     for (int i = 0; i < path.length - 1; i++) {
       canvas.drawLine(
-        positions[path[i]]!,
-        positions[path[i + 1]]!,
+        controller.letterPosition(path[i]),
+        controller.letterPosition(path[i + 1]),
         currentWordPaint,
       );
     }
