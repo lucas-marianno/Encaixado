@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 class WordField extends StatelessWidget {
   const WordField({required this.controller, super.key});
 
-  final PathController controller;
+  final GameController controller;
 
   @override
   Widget build(BuildContext context) {
     final focusNode = FocusNode();
     final textController = TextEditingController();
-    final text = controller.currentWord.toUpperCase();
+    final text = controller.word.toUpperCase();
     textController.value = TextEditingValue(
       text: text,
       selection: TextSelection.collapsed(offset: text.length),
@@ -19,7 +19,7 @@ class WordField extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          width: controller.boxSize,
+          // width: controller.boxSize,
           child: TextField(
             controller: textController,
             focusNode: focusNode,
@@ -28,15 +28,15 @@ class WordField extends StatelessWidget {
             onChanged: (value) {
               if (value.isEmpty || value.contains(controller.box.denied)) {
                 textController.value = TextEditingValue(
-                  text: controller.currentWord.toUpperCase(),
+                  text: controller.word.toUpperCase(),
                   selection: TextSelection.collapsed(
-                    offset: controller.currentWord.length,
+                    offset: controller.word.length,
                   ),
                 );
 
                 if (value.isEmpty) controller.deleteLastChar();
               } else {
-                controller.setWord = value.toLowerCase();
+                controller.addChar(value.lastChar);
                 textController.selection =
                     TextSelection.collapsed(offset: value.length);
               }

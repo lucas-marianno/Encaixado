@@ -1,16 +1,20 @@
+import 'package:encaixado/presentation/game_controller.dart';
 import 'package:encaixado/presentation/widgets/letter_target.dart';
 import 'package:encaixado/path_controller.dart';
+
 import 'package:encaixado/presentation/widgets/path_painter.dart';
 import 'package:flutter/material.dart';
 
 class LetterBox extends StatelessWidget {
-  final PathController controller;
-  const LetterBox({required this.controller, super.key});
+  final TouchController touchController;
+  final GameController gameController;
+  const LetterBox(
+      {required this.touchController, required this.gameController, super.key});
 
   @override
   Widget build(BuildContext context) {
-    final letterBoxPos = controller.lettersPositioned;
-    final size = controller.boxSize;
+    final letterBoxPos = touchController.lettersPositioned;
+    final size = touchController.boxSize;
 
     return SizedBox(
       height: size,
@@ -19,7 +23,10 @@ class LetterBox extends StatelessWidget {
         alignment: AlignmentDirectional.center,
         children: [
           CustomPaint(
-            foregroundPainter: PathPainter(controller),
+            foregroundPainter: PathPainter(
+              touchController: touchController,
+              gameController: gameController,
+            ),
             child: Container(
               margin: EdgeInsets.all(size * 0.05),
               decoration: BoxDecoration(
@@ -29,7 +36,11 @@ class LetterBox extends StatelessWidget {
             ),
           ),
           for (var entry in letterBoxPos.entries)
-            LetterTarget(entry.key, controller: controller)
+            LetterTarget(
+              entry.key,
+              gameController: gameController,
+              touchController: touchController,
+            ),
         ],
       ),
     );

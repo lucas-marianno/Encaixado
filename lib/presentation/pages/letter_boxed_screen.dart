@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:encaixado/presentation/game_controller.dart';
 import 'package:encaixado/presentation/widgets/letter_box.dart';
 import 'package:encaixado/path_controller.dart';
 import 'package:encaixado/presentation/widgets/word_field.dart';
@@ -21,7 +22,8 @@ class LetterBoxedScreen extends StatefulWidget {
 }
 
 class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
-  late final PathController controller;
+  late final TouchController controller;
+  late final GameController gameController;
 
   @override
   void initState() {
@@ -30,8 +32,14 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
       context: context,
       engine: widget.gameEngine,
       box: widget.game.box,
-      setStateCallback: () => setState(() {}),
+      engine: widget.gameEngine,
     );
+    // controller = PathController(
+    //   gameController: gameController,
+    //   engine: widget.gameEngine,
+    //   box: widget.game.box,
+    //   setStateCallback: () => setState(() {}),
+    // );
   }
 
   @override
@@ -51,12 +59,16 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                WordField(controller: controller),
-                LetterBox(controller: controller),
+                WordField(controller: gameController),
+                LetterBox(
+                  touchController: controller,
+                  gameController: gameController,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     OutlinedButton(
+
                       onPressed: () => controller.restartGame(),
                       child: const Text('Reiniciar'),
                     ),
@@ -67,6 +79,7 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
                     OutlinedButton(
                       onPressed: () => controller.validate(),
                       child: const Text('    Ir    '),
+
                     ),
                   ],
                 )

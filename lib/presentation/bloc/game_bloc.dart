@@ -18,7 +18,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     add(GameInitial());
   }
 
-  _onGameInitial(GameEvent event, Emitter<GameState> emit) async {
+  _onGameInitial(_, Emitter<GameState> emit) async {
     emit(GameLoading());
 
     // _game = await gameEngine.loadRandomGame();
