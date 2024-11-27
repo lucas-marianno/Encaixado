@@ -7,10 +7,7 @@ class PathController {
   final Box box;
   final void Function() setStateCallback;
 
-  PathController({
-    required this.box,
-    required this.setStateCallback,
-  });
+  PathController({required this.box, required this.setStateCallback});
 
   set boxSize(double size) {
     _boxSize = size;
@@ -92,8 +89,6 @@ class PathController {
     _wordList.add(currentWord);
     _wordBuffer.clear();
     _wordBuffer.write(startingLetter);
-
-    setStateCallback();
   }
 
   final StringBuffer _wordBuffer = StringBuffer();
