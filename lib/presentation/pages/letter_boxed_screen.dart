@@ -38,13 +38,15 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
         await dialog.show(
           title: 'Genial!',
           message: 'Você resolveu o Encaixado de hoje com apenas '
-              '${controller.currentSolution.length} palavras:'
-              '\n\n${controller.currentSolution}',
+              '${controller.currentSolution.length} palavras:\n\n'
+              '${controller.currentSolution.join(' - ').toUpperCase()}',
         );
       }
+      setState(() {});
     } else {
-      dialog.show(
-          message: '"${controller.currentWord}" não é uma palavra aceita');
+      await dialog.show(
+        message: '"${controller.currentWord}" não é uma palavra aceita',
+      );
     }
   }
 
@@ -62,6 +64,7 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     controller.boxSize = min(screenSize.width * 0.5, screenSize.height * 0.3);
+
     return Column(
       children: [
         Text('at least ${widget.game.nOfSolutions} solutions'),
@@ -71,34 +74,74 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
               horizontal: screenSize.width * 0.1,
               vertical: screenSize.height * 0.1,
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                WordField(controller: controller, onSubmitted: () => submit()),
-                LetterBox(controller: controller),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    OutlinedButton(
-                      onPressed: () => controller.restartGame(),
-                      child: const Text('Restart'),
-                    ),
-                    OutlinedButton(
-                      onPressed: () => controller.deleteLastLetter(),
-                      child: const Text('Delete'),
-                    ),
-                    OutlinedButton(
-                      onPressed: () => submit(),
-                      child: const Text('Enter'),
-                    ),
-                  ],
-                )
-              ],
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  WordField(
+                    controller: controller,
+                    onSubmitted: () => submit(),
+                  ),
+                  LetterBox(controller: controller),
+                  LetterBoxButtons(
+                    controller: controller,
+                    onSubmitted: () => submit(),
+                  )
+                ],
+              ),
             ),
           ),
         ),
       ],
     );
+  }
+}
+
+class LetterBoxButtons extends StatelessWidget {
+  const LetterBoxButtons({
+    required this.controller,
+    required this.onSubmitted,
+    super.key,
+  });
+  final PathController controller;
+  final void Function() onSubmitted;
+
+  @override
+  Widget build(BuildContext context) {
+    final btn = <Widget>[
+      OutlinedButton(
+        onPressed: () => controller.restartGame(),
+        child: const Text('Recomeçar'),
+      ),
+      OutlinedButton(
+        onPressed: () => controller.deleteLastLetter(),
+        child: const Text('  Apagar  '),
+      ),
+      OutlinedButton(
+        onPressed: () => onSubmitted(),
+        child: const Text('   Enviar   '),
+      ),
+    ];
+
+    final w = controller.boxSize * 2;
+
+    if (w < 420) {
+      return SizedBox(
+        height: controller.boxSize * 0.8,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: btn,
+        ),
+      );
+    } else {
+      return SizedBox(
+        width: controller.boxSize * 2,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: btn,
+        ),
+      );
+    }
   }
 }

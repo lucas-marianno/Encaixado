@@ -1,64 +1,49 @@
 import 'package:encaixado/presentation/path_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class WordField extends StatelessWidget {
-  const WordField({
-    required this.controller,
-    required this.onSubmitted,
-    super.key,
-  });
-
+  WordField({required this.controller, required this.onSubmitted, super.key});
   final PathController controller;
   final void Function() onSubmitted;
 
+  final focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
-    final focusNode = FocusNode();
-    final textController = TextEditingController();
-    final text = controller.currentWord.toUpperCase();
-    textController.value = TextEditingValue(
-      text: text,
-      selection: TextSelection.collapsed(offset: text.length),
-    );
+    focusNode.requestFocus();
+    return KeyboardListener(
+      focusNode: focusNode,
+      onKeyEvent: (value) {
+        if (value is! KeyDownEvent) return;
+        final keyLabel = value.logicalKey.keyLabel.toLowerCase();
 
-    return Column(
-      children: [
-        SizedBox(
-          width: controller.boxSize,
-          child: TextField(
-            enableInteractiveSelection: false,
-            selectionControls: EmptyTextSelectionControls(),
-            controller: textController,
-            focusNode: focusNode,
-            textAlign: TextAlign.center,
-            showCursor: true,
-            onChanged: (value) {
-              if (value.isEmpty || value.contains(controller.box.denied)) {
-                textController.value = TextEditingValue(
-                  text: controller.currentWord.toUpperCase(),
-                  selection: TextSelection.collapsed(
-                    offset: controller.currentWord.length,
-                  ),
-                );
-
-                if (value.isEmpty) controller.deleteLastLetter();
-              } else {
-                // controller.setWord = value.toLowerCase();
-                textController.selection =
-                    TextSelection.collapsed(offset: value.length);
-              }
-            },
-            onSubmitted: (_) {
-              onSubmitted();
-              focusNode.requestFocus();
-            },
-            keyboardType: TextInputType.text,
+        if (controller.box.availableLetters.contains(keyLabel)) {
+          controller.onAcceptDrag(keyLabel);
+        }
+        if (keyLabel == 'backspace') {
+          controller.deleteLastLetter();
+        }
+        if (keyLabel == 'enter') {
+          onSubmitted();
+        }
+      },
+      child: GestureDetector(
+        onTap: () {
+          print('tap');
+        },
+        child: Container(
+          color: Colors.transparent,
+          width: controller.boxSize * 1.3,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(controller.currentWord.toUpperCase()),
+              const Divider(height: 10, indent: 10, endIndent: 10),
+              Text(controller.currentSolution.join('  ->  ').toUpperCase()),
+            ],
           ),
         ),
-        const SizedBox(height: 10),
-        // TODO: implement words used
-        Text(controller.currentSolution.join('  ->  ')),
-      ],
+      ),
     );
   }
 }
