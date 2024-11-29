@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:encaixado/domain/usecases/load_todays_game.dart';
 import 'package:equatable/equatable.dart';
 import 'package:letter_boxed_engine/letter_boxed_engine.dart';
 import 'package:meta/meta.dart';
@@ -9,10 +10,8 @@ part 'game_event.dart';
 part 'game_state.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
-  final LetterBoxedEngine gameEngine;
-  late final Game _game;
-
-  GameBloc(this.gameEngine) : super(GameLoading()) {
+  final LoadTodaysGameUseCase loadTodaysGame;
+  GameBloc(this.loadTodaysGame) : super(GameLoading()) {
     on<GameInitial>(_onGameInitial);
 
     add(GameInitial());
@@ -21,13 +20,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   _onGameInitial(GameEvent event, Emitter<GameState> emit) async {
     emit(GameLoading());
 
-    // _game = await gameEngine.loadRandomGame();
-    _game = Game(
-      box: Box(fromString: "cnr ota iep mus"),
-      language: GameLanguage.pt,
-      nOfSolutions: 58732,
-    );
+    final game = loadTodaysGame();
 
-    emit(GameLoaded(gameEngine: gameEngine, game: _game));
+    emit(GameLoaded(gameEngine: loadTodaysGame.engine, game: game));
   }
 }
