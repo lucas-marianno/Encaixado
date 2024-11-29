@@ -1,7 +1,7 @@
-import 'package:encaixado/presentation/widgets/letter_target.dart';
-import 'package:encaixado/presentation/path_controller.dart';
-import 'package:encaixado/presentation/widgets/path_painter.dart';
 import 'package:flutter/material.dart';
+
+import 'letter_target.dart';
+import 'package:encaixado/presentation/helpers/helpers.dart';
 
 class LetterBox extends StatelessWidget {
   final PathController controller;

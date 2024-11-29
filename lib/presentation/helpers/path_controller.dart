@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
+
+import 'package:letter_boxed_engine/letter_boxed_engine.dart';
+
 import 'package:encaixado/domain/extensions/string_buffer_extentsion.dart';
 import 'package:encaixado/domain/extensions/string_extension.dart';
-import 'package:flutter/material.dart';
-import 'package:letter_boxed_engine/letter_boxed_engine.dart';
 
 class PathController {
   final Box box;

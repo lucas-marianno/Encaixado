@@ -1,6 +1,7 @@
-import 'package:encaixado/domain/extensions/string_extension.dart';
-import 'package:encaixado/presentation/path_controller.dart';
 import 'package:flutter/material.dart';
+
+import 'package:encaixado/domain/extensions/string_extension.dart';
+import 'package:encaixado/presentation/helpers/helpers.dart';
 
 class LetterTarget extends StatelessWidget {
   final String letter;

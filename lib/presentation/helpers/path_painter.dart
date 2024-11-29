@@ -1,5 +1,5 @@
-import 'package:encaixado/presentation/path_controller.dart';
 import 'package:flutter/material.dart';
+import 'path_controller.dart';
 
 class PathPainter extends CustomPainter {
   final PathController controller;

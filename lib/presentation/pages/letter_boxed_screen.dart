@@ -1,11 +1,11 @@
 import 'dart:math';
 
-import 'package:encaixado/presentation/widgets/dialog.dart';
-import 'package:encaixado/presentation/widgets/letter_box.dart';
-import 'package:encaixado/presentation/path_controller.dart';
-import 'package:encaixado/presentation/widgets/word_field.dart';
 import 'package:flutter/material.dart';
+
 import 'package:letter_boxed_engine/letter_boxed_engine.dart';
+
+import 'package:encaixado/presentation/widgets/widgets.dart';
+import 'package:encaixado/presentation/helpers/helpers.dart';
 
 class LetterBoxedScreen extends StatefulWidget {
   final LetterBoxedEngine gameEngine;

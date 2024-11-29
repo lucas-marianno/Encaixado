@@ -1,6 +1,7 @@
-import 'package:encaixado/presentation/path_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:encaixado/presentation/helpers/helpers.dart';
 
 class WordField extends StatelessWidget {
   WordField({required this.controller, required this.onSubmitted, super.key});
