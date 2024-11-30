@@ -9,11 +9,11 @@ class PreviousGameButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Theme.of(context).colorScheme.primary,
-      child: Center(
-        child: TextButton(
-          onPressed: () => onTap(),
+    return InkWell(
+      onTap: onTap,
+      child: Card(
+        color: Theme.of(context).colorScheme.primary,
+        child: Center(
           child: Text(
             gameLabel,
             style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),

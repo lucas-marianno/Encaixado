@@ -12,19 +12,12 @@ class Home extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         drawer: const LeftDrawer(),
-        appBar: AppBar(
-          title: const Text('Encaixado'),
-          centerTitle: true,
-          actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
-          ],
-        ),
+        appBar: AppBar(title: const Text('Encaixado'), centerTitle: true),
         body: BlocBuilder<GameBloc, GameState>(
           builder: (context, state) {
             if (state is GameLoading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is GameLoaded) {
-              print(state);
               return LetterBoxedScreen(
                 gameEngine: state.gameEngine,
                 game: state.game,

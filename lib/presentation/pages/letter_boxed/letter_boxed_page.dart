@@ -76,8 +76,8 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
 
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: screenSize.width * 0.1,
-        vertical: screenSize.height * 0.1,
+        horizontal: screenSize.width * 0.03,
+        vertical: screenSize.height * 0.02,
       ),
       child: Center(
         child: Column(

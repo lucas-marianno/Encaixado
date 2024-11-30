@@ -26,21 +26,24 @@ class PreviousGamesPage extends StatelessWidget {
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: screenSize.width * 0.1,
-            vertical: screenSize.width * 0.1,
+            horizontal: screenSize.width * 0.03,
+            vertical: screenSize.width * 0.02,
           ),
-          child: GridView.count(
-            crossAxisCount: 4,
-            children: [
-              for (int i = 0; i <= gameBloc.daysFromEpoch; i++)
-                PreviousGameButton(
-                  gameLabel: _getPreviousGameButtonLabel(i),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    gameBloc.add(LoadGame(i));
-                  },
-                )
-            ],
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: GridView.count(
+              crossAxisCount: screenSize.width < 300 ? 2 : 4,
+              children: [
+                for (int i = 0; i <= gameBloc.daysFromEpoch; i++)
+                  PreviousGameButton(
+                    gameLabel: _getPreviousGameButtonLabel(i),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      gameBloc.add(LoadGame(i));
+                    },
+                  )
+              ],
+            ),
           ),
         ),
       ),
