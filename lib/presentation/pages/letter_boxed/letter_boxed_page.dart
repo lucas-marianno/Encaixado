@@ -23,7 +23,7 @@ class LetterBoxedScreen extends StatefulWidget {
 }
 
 class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
-  late PathController controller;
+  late final PathController controller;
   late final MessageDialog dialog;
 
   void submit() async {
@@ -63,16 +63,16 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
   void initState() {
     super.initState();
     dialog = MessageDialog(context);
+    controller = PathController(
+      setStateCallback: () => setState(() {}),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    controller = PathController(
-      box: widget.game.box,
-      setStateCallback: () => setState(() {}),
-    );
     controller.boxSize = min(screenSize.width * 0.5, screenSize.height * 0.3);
+    controller.box = widget.game.box;
 
     return Padding(
       padding: EdgeInsets.symmetric(

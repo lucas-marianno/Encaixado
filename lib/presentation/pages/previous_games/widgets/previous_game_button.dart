@@ -9,10 +9,10 @@ class PreviousGameButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Card(
-        color: Theme.of(context).colorScheme.primary,
+    return Card(
+      color: Theme.of(context).colorScheme.primary,
+      child: InkWell(
+        onTap: onTap,
         child: Center(
           child: Text(
             gameLabel,

@@ -6,10 +6,10 @@ import 'package:encaixado/core/extensions/string_buffer_extentsion.dart';
 import 'package:encaixado/core/extensions/string_extension.dart';
 
 class PathController {
-  final Box box;
+  late Box box;
   final void Function() setStateCallback;
 
-  PathController({required this.box, required this.setStateCallback});
+  PathController({required this.setStateCallback});
 
   set boxSize(double size) {
     _boxSize = size;
