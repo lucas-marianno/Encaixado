@@ -32,20 +32,28 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
     if (isValidWord) {
       controller.addCurrentWordToSolution();
 
-      final isValidSolution = widget.gameEngine
-          .validateSolution(controller.currentSolution, widget.game.box);
+      final solution = controller.currentSolution;
+      final isValidSolution =
+          widget.gameEngine.validateSolution(solution, widget.game.box);
       if (isValidSolution) {
         await dialog.show(
-          title: 'Genial!',
-          message: 'Você resolveu o Encaixado de hoje com apenas '
-              '${controller.currentSolution.length} palavras:\n\n'
-              '${controller.currentSolution.join(' - ').toUpperCase()}',
-        );
+            title: 'Genial!',
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Você resolveu o Encaixado de hoje com apenas '
+                    '${solution.length}'
+                    ' palavra${solution.length > 1 ? 's' : ''}:'),
+                const Text('\n\n'),
+                Text(solution.join(' - ').toUpperCase()),
+              ],
+            ));
       }
       setState(() {});
     } else {
       await dialog.show(
-        message: '"${controller.currentWord}" não é uma palavra aceita',
+        content: Text('"${controller.currentWord}" não é uma palavra aceita'),
       );
     }
   }

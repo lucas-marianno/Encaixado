@@ -5,7 +5,7 @@ class MessageDialog {
   final BuildContext context;
   MessageDialog(this.context);
 
-  Future show({String? title, required String message}) async {
+  Future show({String? title, required Widget content}) async {
     return await showDialog(
       context: context,
       builder: (context) => KeyboardListener(
@@ -23,7 +23,7 @@ class MessageDialog {
         },
         child: AlertDialog(
           title: title == null ? null : Text(title),
-          content: Text(message),
+          content: content,
         ),
       ),
     );
