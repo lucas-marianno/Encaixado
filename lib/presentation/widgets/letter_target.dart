@@ -19,7 +19,15 @@ class LetterTarget extends StatelessWidget {
     return Transform.translate(
       offset: controller.letterPositionAbsolute(letter),
       child: DragTarget<String>(
-        onAcceptWithDetails: (_) => controller.onAcceptDrag(letter),
+        // onWillAcceptWithDetails: (details) {
+        //   print(details);
+        //   print(letter);
+        //   return true;
+        // },
+        onWillAcceptWithDetails: (_) {
+          controller.onAcceptDrag(letter);
+          return true;
+        },
         builder: (_, __, ___) {
           return Draggable<String>(
             data: letter,
@@ -28,32 +36,41 @@ class LetterTarget extends StatelessWidget {
             onDragEnd: (_) => controller.onDragEnd(),
             feedback: const SizedBox(),
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white,
-                border: Border.all(
-                  color: isSelected || !isUsed ? Colors.black : Colors.grey,
-                  width: 2,
-                ),
-                boxShadow: !isSelected
-                    ? null
-                    : [
-                        BoxShadow(
-                          color: Colors.pink,
-                          spreadRadius: controller.boxSize * 0.02,
-                          blurRadius: controller.boxSize * 0.02,
-                        )
-                      ],
+                color: Colors.transparent,
               ),
-              child: SizedBox(
-                height: controller.boxSize * .15,
-                width: controller.boxSize * .15,
-                child: Center(
-                  child: Text(
-                    letter.toUpperCase(),
-                    style: TextStyle(
-                      color: isSelected || !isUsed ? Colors.black : Colors.grey,
-                      fontWeight: isSelected ? FontWeight.w900 : null,
+              // This is used to enlarge the sensibility area of the letter
+              padding: EdgeInsets.all(controller.boxSize * 0.035),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  border: Border.all(
+                    color: isSelected || !isUsed ? Colors.black : Colors.grey,
+                    width: 2,
+                  ),
+                  boxShadow: !isSelected
+                      ? null
+                      : [
+                          BoxShadow(
+                            color: Colors.pink,
+                            spreadRadius: controller.boxSize * 0.02,
+                            blurRadius: controller.boxSize * 0.02,
+                          )
+                        ],
+                ),
+                child: SizedBox(
+                  height: controller.boxSize * .15,
+                  width: controller.boxSize * .15,
+                  child: Center(
+                    child: Text(
+                      letter.toUpperCase(),
+                      style: TextStyle(
+                        color:
+                            isSelected || !isUsed ? Colors.black : Colors.grey,
+                        fontWeight: isSelected ? FontWeight.w900 : null,
+                      ),
                     ),
                   ),
                 ),
