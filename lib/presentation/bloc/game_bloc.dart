@@ -46,10 +46,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       language: engine.language,
       nOfSolutions: 288568,
     );
-    // ignore: avoid_print
-    print('[transcendentalismo]\n'
-        '[candidataremos, sensorial]\n'
-        '[mercantilismo, ornamentando]\n');
+    // transcendentalismo
+    // candidataremos, sensorial
+    // mercantilismo, ornamentando
 
     emit(GameLoaded(gameEngine: engine, game: debugGame));
   }

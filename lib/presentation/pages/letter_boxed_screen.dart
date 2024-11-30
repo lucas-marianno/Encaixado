@@ -92,7 +92,7 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
                     onSubmitted: () => submit(),
                   ),
                   LetterBox(controller: controller),
-                  LetterBoxButtons(
+                  LetterBoxedButtons(
                     controller: controller,
                     onSubmitted: () => submit(),
                   )
@@ -103,53 +103,5 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
         ),
       ],
     );
-  }
-}
-
-class LetterBoxButtons extends StatelessWidget {
-  const LetterBoxButtons({
-    required this.controller,
-    required this.onSubmitted,
-    super.key,
-  });
-  final PathController controller;
-  final void Function() onSubmitted;
-
-  @override
-  Widget build(BuildContext context) {
-    final btn = <Widget>[
-      OutlinedButton(
-        onPressed: () => controller.restartGame(),
-        child: const Text('Recomeçar'),
-      ),
-      OutlinedButton(
-        onPressed: () => controller.deleteLastLetter(),
-        child: const Text('  Apagar  '),
-      ),
-      OutlinedButton(
-        onPressed: () => onSubmitted(),
-        child: const Text('   Enviar   '),
-      ),
-    ];
-
-    final w = controller.boxSize * 2;
-
-    if (w < 420) {
-      return SizedBox(
-        height: controller.boxSize * 0.8,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: btn,
-        ),
-      );
-    } else {
-      return SizedBox(
-        width: controller.boxSize * 2,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: btn,
-        ),
-      );
-    }
   }
 }
