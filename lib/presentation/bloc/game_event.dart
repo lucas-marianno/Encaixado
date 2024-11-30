@@ -9,3 +9,5 @@ sealed class GameEvent extends Equatable {
 }
 
 final class GameInitial extends GameEvent {}
+
+final class GameDebugMode extends GameEvent {}
