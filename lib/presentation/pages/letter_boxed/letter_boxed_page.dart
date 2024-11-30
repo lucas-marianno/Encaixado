@@ -1,11 +1,12 @@
 import 'dart:math';
 
+import 'package:encaixado/presentation/widgets/dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:letter_boxed_engine/letter_boxed_engine.dart';
 
-import 'package:encaixado/presentation/widgets/widgets.dart';
-import 'package:encaixado/presentation/helpers/helpers.dart';
+import 'package:encaixado/presentation/pages/letter_boxed/widgets/letter_boxed_widgets.dart';
+import 'package:encaixado/presentation/pages/letter_boxed/helpers/helpers.dart';
 
 class LetterBoxedScreen extends StatefulWidget {
   final LetterBoxedEngine gameEngine;
@@ -22,7 +23,7 @@ class LetterBoxedScreen extends StatefulWidget {
 }
 
 class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
-  late final PathController controller;
+  late PathController controller;
   late final MessageDialog dialog;
 
   void submit() async {
@@ -62,46 +63,39 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
   void initState() {
     super.initState();
     dialog = MessageDialog(context);
-    controller = PathController(
-      box: widget.game.box,
-      setStateCallback: () => setState(() {}),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    controller = PathController(
+      box: widget.game.box,
+      setStateCallback: () => setState(() {}),
+    );
     controller.boxSize = min(screenSize.width * 0.5, screenSize.height * 0.3);
 
-    return Column(
-      children: [
-        Text('at least ${widget.game.nOfSolutions} solutions'),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: screenSize.width * 0.1,
-              vertical: screenSize.height * 0.1,
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: screenSize.width * 0.1,
+        vertical: screenSize.height * 0.1,
+      ),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            WordField(
+              controller: controller,
+              onSubmitted: () => submit(),
             ),
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  WordField(
-                    controller: controller,
-                    onSubmitted: () => submit(),
-                  ),
-                  LetterBox(controller: controller),
-                  LetterBoxedButtons(
-                    controller: controller,
-                    onSubmitted: () => submit(),
-                  )
-                ],
-              ),
-            ),
-          ),
+            LetterBox(controller: controller),
+            LetterBoxedButtons(
+              controller: controller,
+              onSubmitted: () => submit(),
+            )
+          ],
         ),
-      ],
+      ),
     );
   }
 }

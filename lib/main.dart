@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:letter_boxed_engine/letter_boxed_engine.dart';
 
 import 'presentation/bloc/game_bloc.dart';
-import 'presentation/pages/home_screen.dart';
+import 'presentation/pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       ),
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: HomeScreen(),
+        home: Home(),
       ),
     );
   }

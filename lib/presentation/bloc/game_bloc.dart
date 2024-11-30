@@ -15,6 +15,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   final CalculateDaysFromAppEpochUsecase calculateDaysFromAppEpoch;
   final GameLanguage language;
 
+  int get daysFromEpoch => calculateDaysFromAppEpoch();
   late final LetterBoxedEngine _gameEngine;
 
   GameBloc({
@@ -23,9 +24,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     required this.calculateDaysFromAppEpoch,
   }) : super(GameLoading()) {
     on<GameInitial>(_onGameInitial);
-    on<GameDebugMode>(_onGameDebugMode);
+    on<_GameInitialDebugMode>(_onGameDebugMode);
+    on<LoadGame>(_onLoadGame);
 
-    add(kDebugMode ? GameDebugMode() : GameInitial());
+    add(kDebugMode ? _GameInitialDebugMode() : GameInitial());
   }
 
   _onGameInitial(_, Emitter<GameState> emit) async {
@@ -34,8 +36,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     _gameEngine = LetterBoxedEngine(language);
     await _gameEngine.init();
 
-    final game = loadGame(_gameEngine, calculateDaysFromAppEpoch());
-    emit(GameLoaded(gameEngine: _gameEngine, game: game));
+    add(LoadGame(daysFromEpoch));
   }
 
   _onGameDebugMode(_, Emitter<GameState> emit) async {
@@ -45,15 +46,16 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     _gameEngine = LetterBoxedEngine(GameLanguage.pt);
     await _gameEngine.init();
 
-    final debugGame = Game(
-      box: Box(fromString: 'aoe drm slt icn'),
-      language: _gameEngine.language,
-      nOfSolutions: 288568,
-    );
     // transcendentalismo
     // candidataremos, sensorial
     // mercantilismo, ornamentando
+    add(const LoadGame(189));
+  }
 
-    emit(GameLoaded(gameEngine: _gameEngine, game: debugGame));
+  _onLoadGame(LoadGame event, Emitter<GameState> emit) {
+    emit(GameLoading());
+    final game = loadGame(_gameEngine, event.gameNumber);
+
+    emit(GameLoaded(gameEngine: _gameEngine, game: game));
   }
 }

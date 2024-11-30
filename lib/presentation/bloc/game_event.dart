@@ -10,4 +10,13 @@ sealed class GameEvent extends Equatable {
 
 final class GameInitial extends GameEvent {}
 
-final class GameDebugMode extends GameEvent {}
+final class _GameInitialDebugMode extends GameEvent {}
+
+final class LoadGame extends GameEvent {
+  final int gameNumber;
+
+  const LoadGame(this.gameNumber);
+
+  @override
+  List<Object?> get props => [gameNumber];
+}

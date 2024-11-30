@@ -1,4 +1,4 @@
-import 'package:encaixado/domain/constants.dart';
+import 'package:encaixado/core/constants.dart';
 
 /// Calculates the number of elapsed days since day 0 (app first web release)
 class CalculateDaysFromAppEpochUsecase {

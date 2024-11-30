@@ -1,4 +1,4 @@
-import 'package:encaixado/presentation/helpers/path_controller.dart';
+import 'package:encaixado/presentation/pages/letter_boxed/helpers/path_controller.dart';
 import 'package:flutter/material.dart';
 
 class LetterBoxedButtons extends StatelessWidget {
