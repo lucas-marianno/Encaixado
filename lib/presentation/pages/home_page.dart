@@ -1,16 +1,18 @@
 import 'package:encaixado/presentation/bloc/game_bloc.dart';
-import 'package:encaixado/presentation/pages/letter_boxed_screen.dart';
+import 'package:encaixado/presentation/pages/letter_boxed/letter_boxed_page.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+import '../widgets/left_drawer.dart';
+
+class Home extends StatelessWidget {
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawer: const LeftDrawer(),
         appBar: AppBar(
-          leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
           title: const Text('Encaixado'),
           centerTitle: true,
           actions: [
@@ -22,6 +24,7 @@ class HomeScreen extends StatelessWidget {
             if (state is GameLoading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is GameLoaded) {
+              print(state);
               return LetterBoxedScreen(
                 gameEngine: state.gameEngine,
                 game: state.game,
