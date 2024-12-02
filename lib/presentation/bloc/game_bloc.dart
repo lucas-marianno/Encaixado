@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:encaixado/domain/usecases/calculate_days_from_epoch.dart';
 import 'package:encaixado/domain/usecases/load_game.dart';
+import 'package:encaixado/domain/usecases/load_game_engine.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:letter_boxed_engine/letter_boxed_engine.dart';
@@ -11,20 +12,20 @@ part 'game_event.dart';
 part 'game_state.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
+  final LoadGameEngineUseCase loadEngine;
   final LoadGameUseCase loadGame;
   final CalculateDaysFromAppEpochUsecase calculateDaysFromAppEpoch;
-  final GameLanguage language;
 
   int get daysFromEpoch => calculateDaysFromAppEpoch();
   late final LetterBoxedEngine _gameEngine;
 
   GameBloc({
-    required this.language,
     required this.loadGame,
+    required this.loadEngine,
     required this.calculateDaysFromAppEpoch,
   }) : super(GameLoading()) {
     on<GameInitial>(_onGameInitial);
-    on<_GameInitialDebugMode>(_onGameDebugMode);
+    on<_GameInitialDebugMode>(_onGameInitialDebugMode);
     on<LoadGame>(_onLoadGame);
 
     add(kDebugMode ? _GameInitialDebugMode() : GameInitial());
@@ -33,18 +34,16 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   _onGameInitial(_, Emitter<GameState> emit) async {
     emit(GameLoading());
 
-    _gameEngine = LetterBoxedEngine(language);
-    await _gameEngine.init();
+    _gameEngine = await loadEngine();
 
     add(LoadGame(daysFromEpoch));
   }
 
-  _onGameDebugMode(_, Emitter<GameState> emit) async {
+  _onGameInitialDebugMode(_, Emitter<GameState> emit) async {
     assert(kDebugMode);
     emit(GameLoading());
 
-    _gameEngine = LetterBoxedEngine(GameLanguage.pt);
-    await _gameEngine.init();
+    _gameEngine = await loadEngine();
 
     // transcendentalismo
     // candidataremos, sensorial
