@@ -1,9 +1,11 @@
 import 'package:encaixado/core/constants.dart';
 import 'package:encaixado/presentation/bloc/game_bloc.dart';
+import 'package:encaixado/presentation/pages/home_page.dart';
 import 'package:encaixado/presentation/pages/previous_games/widgets/previous_game_button.dart';
 import 'package:flutter/material.dart';
 
 class PreviousGamesPage extends StatelessWidget {
+  static const routeName = '/previousGamePage';
   const PreviousGamesPage({super.key});
 
   String _getPreviousGameButtonLabel(int gameNumber) {
@@ -38,7 +40,10 @@ class PreviousGamesPage extends StatelessWidget {
                   PreviousGameButton(
                     gameLabel: _getPreviousGameButtonLabel(i),
                     onTap: () {
-                      Navigator.of(context).pop();
+                      Navigator.popUntil(
+                        context,
+                        ModalRoute.withName(Home.routeName),
+                      );
                       gameBloc.add(LoadGame(i));
                     },
                   )

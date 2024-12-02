@@ -1,10 +1,11 @@
 import 'package:encaixado/domain/usecases/calculate_days_from_epoch.dart';
 import 'package:encaixado/domain/usecases/load_game.dart';
+import 'package:encaixado/domain/usecases/load_game_engine.dart';
+import 'package:encaixado/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:letter_boxed_engine/letter_boxed_engine.dart';
 
 import 'presentation/bloc/game_bloc.dart';
-import 'presentation/pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,13 +20,14 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (_) => GameBloc(
         // TODO: Consider using an injection container
-        language: GameLanguage.pt,
+        loadEngine: LoadGameEngineUseCase(GameLanguage.pt),
         loadGame: LoadGameUseCase(),
         calculateDaysFromAppEpoch: CalculateDaysFromAppEpochUsecase(),
       ),
-      child: const MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Home(),
+        routes: Routes.routes,
+        initialRoute: Routes.initialRoute,
       ),
     );
   }

@@ -14,12 +14,7 @@ class LeftDrawer extends StatelessWidget {
             leading: const Icon(Icons.calendar_month),
             title: const Text('Jogos anteriores'),
             onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const PreviousGamesPage(),
-                ),
-              );
+              Navigator.popAndPushNamed(context, PreviousGamesPage.routeName);
             },
           ),
           const Spacer(),

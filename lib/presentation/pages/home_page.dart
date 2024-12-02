@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../widgets/left_drawer.dart';
 
 class Home extends StatelessWidget {
+  static const routeName = '/home';
   const Home({super.key});
 
   @override
