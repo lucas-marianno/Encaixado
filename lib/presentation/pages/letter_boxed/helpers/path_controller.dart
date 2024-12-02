@@ -6,10 +6,13 @@ import 'package:encaixado/core/extensions/string_buffer_extentsion.dart';
 import 'package:encaixado/core/extensions/string_extension.dart';
 
 class PathController {
-  late Box box;
+  late Box _box;
   final void Function() setStateCallback;
 
-  PathController({required this.setStateCallback});
+  PathController({
+    required Box box,
+    required this.setStateCallback,
+  }) : _box = box;
 
   set boxSize(double size) {
     _boxSize = size;
@@ -18,6 +21,14 @@ class PathController {
     setStateCallback();
   }
 
+  set updateBox(Box box) {
+    if (box == _box) return;
+
+    restartGame();
+    _box = box;
+  }
+
+  Box get box => _box;
   double get boxSize => _boxSize;
   Offset? get touchStart =>
       _wordBuffer.isEmpty ? null : letterPosition(_wordBuffer.lastChar);
