@@ -16,14 +16,23 @@ class LetterBoxedButtons extends StatelessWidget {
 
     final btn = <Widget>[
       OutlinedButton(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: Theme.of(context).colorScheme.onSurface,
+        ),
         onPressed: () => controller.restartGame(),
-        child: const Text('Recomeçar'),
+        child: Text('Recomeçar'),
       ),
       OutlinedButton(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: Theme.of(context).colorScheme.onSurface,
+        ),
         onPressed: () => controller.deleteLastLetter(),
         child: const Text('  Apagar  '),
       ),
       OutlinedButton(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: Theme.of(context).colorScheme.onSurface,
+        ),
         onPressed: () => onSubmitted(),
         child: const Text('   Enviar   '),
       ),

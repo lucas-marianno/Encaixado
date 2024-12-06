@@ -1,5 +1,5 @@
 import 'package:encaixado/core/constants.dart';
-import 'package:encaixado/presentation/bloc/game_bloc.dart';
+import 'package:encaixado/presentation/bloc/game_bloc/game_bloc.dart';
 import 'package:encaixado/presentation/pages/home_page.dart';
 import 'package:encaixado/presentation/pages/previous_games/widgets/previous_game_button.dart';
 import 'package:flutter/material.dart';

@@ -45,16 +45,18 @@ class LetterTarget extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onSecondary,
                   border: Border.all(
-                    color: isSelected || !isUsed ? Colors.black : Colors.grey,
+                    color: isSelected || !isUsed
+                        ? Theme.of(context).colorScheme.secondary
+                        : Colors.grey,
                     width: 2,
                   ),
                   boxShadow: !isSelected
                       ? null
                       : [
                           BoxShadow(
-                            color: Colors.pink,
+                            color: Theme.of(context).colorScheme.inversePrimary,
                             spreadRadius: controller.boxSize * 0.02,
                             blurRadius: controller.boxSize * 0.02,
                           )
@@ -67,8 +69,9 @@ class LetterTarget extends StatelessWidget {
                     child: Text(
                       letter.toUpperCase(),
                       style: TextStyle(
-                        color:
-                            isSelected || !isUsed ? Colors.black : Colors.grey,
+                        color: isSelected || !isUsed
+                            ? Theme.of(context).colorScheme.secondary
+                            : Colors.grey,
                         fontWeight: isSelected ? FontWeight.w900 : null,
                       ),
                     ),

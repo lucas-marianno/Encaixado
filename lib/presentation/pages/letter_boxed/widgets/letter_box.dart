@@ -18,12 +18,18 @@ class LetterBox extends StatelessWidget {
         alignment: AlignmentDirectional.center,
         children: [
           CustomPaint(
-            foregroundPainter: PathPainter(controller),
+            foregroundPainter: PathPainter(
+              controller,
+              Theme.of(context).colorScheme.inversePrimary,
+            ),
             child: Container(
               margin: EdgeInsets.all(size * 0.05),
               decoration: BoxDecoration(
-                color: Colors.grey,
-                border: Border.all(width: 2),
+                color: Theme.of(context).colorScheme.secondary,
+                border: Border.all(
+                  width: 2,
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
               ),
             ),
           ),

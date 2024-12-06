@@ -1,4 +1,4 @@
-import 'package:encaixado/presentation/bloc/game_bloc.dart';
+import 'package:encaixado/presentation/bloc/game_bloc/game_bloc.dart';
 import 'package:encaixado/presentation/pages/letter_boxed/letter_boxed_page.dart';
 import 'package:flutter/material.dart';
 

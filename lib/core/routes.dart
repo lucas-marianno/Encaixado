@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'presentation/pages/pages.dart';
+import '../presentation/pages/pages.dart';
 
 class Routes {
   static const initialRoute = Home.routeName;
