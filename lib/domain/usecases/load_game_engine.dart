@@ -6,7 +6,7 @@ class LoadGameEngineUseCase {
 
   LoadGameEngineUseCase(this.language);
 
-  Future<LetterBoxedEngine> call([debugEngine = false]) async {
+  Future<LetterBoxedEngine> call({bool debugEngine = false}) async {
     final engine = LetterBoxedEngine(debugEngine ? GameLanguage.pt : language);
 
     await compute((_) async => await engine.init(), null);

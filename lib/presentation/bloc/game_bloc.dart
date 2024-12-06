@@ -43,7 +43,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     assert(kDebugMode);
     emit(GameLoading());
 
-    _gameEngine = await loadEngine();
+    _gameEngine = await loadEngine(debugEngine: true);
 
     // transcendentalismo
     // candidataremos, sensorial

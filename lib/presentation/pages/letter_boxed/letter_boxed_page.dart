@@ -80,22 +80,44 @@ class _LetterBoxedScreenState extends State<LetterBoxedScreen> {
         horizontal: screenSize.width * 0.03,
         vertical: screenSize.height * 0.02,
       ),
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            WordField(
-              controller: controller,
-              onSubmitted: () => submit(),
+      child: Column(
+        children: [
+          Message(widget.game),
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                WordField(
+                  controller: controller,
+                  onSubmitted: () => submit(),
+                ),
+                LetterBox(controller: controller),
+                LetterBoxedButtons(
+                  controller: controller,
+                  onSubmitted: () => submit(),
+                )
+              ],
             ),
-            LetterBox(controller: controller),
-            LetterBoxedButtons(
-              controller: controller,
-              onSubmitted: () => submit(),
-            )
-          ],
-        ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Message extends StatelessWidget {
+  final Game game;
+  const Message(this.game, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Text(
+        'Solução perfeita em '
+        '${game.solution.length} palavras',
+        textAlign: TextAlign.center,
       ),
     );
   }

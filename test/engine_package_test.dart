@@ -10,13 +10,14 @@ void main() {
     await engine.init();
   });
   test('Engine should generate a game', () async {
-    final game = await engine.generateGame(ensureSolvable: true);
+    final game = await engine.generateGame();
 
-    expect(game.nOfSolutions > 0, true, reason: game.toString());
+    expect(game.solution.isNotEmpty, true, reason: game.toString());
   });
-  test('Engine should load a game', () async {
-    final game = engine.getPreGeneratedGames();
+  test('Engine should load a games', () async {
+    final games = engine.getPreGeneratedGames();
 
-    expect(game[0].nOfSolutions > 0, true, reason: game.toString());
+    expect(games.isNotEmpty, true);
+    expect(games[0].solution.isNotEmpty, true, reason: games[0].toString());
   });
 }
